@@ -67,6 +67,7 @@ def main():
     lib_dir = join(home_dir, 'lib', py_version)
     inc_dir = join(home_dir, 'include', py_version)
     bin_dir = join(home_dir, 'bin')
+    local_dir = join(home_dir, 'local')
 
     if sys.executable.startswith(bin_dir):
         print 'Please use the *system* python to run this script'
@@ -78,10 +79,13 @@ def main():
     if options.clear:
         rmtree(lib_dir)
         rmtree(inc_dir)
+        rmtree(local_dir)
         print 'Not deleting', bin_dir
 
+    mkdir(local_dir)
     prefix = sys.prefix
     mkdir(lib_dir)
+    symlink('../lib', join(local_dir, 'lib'))
     stdlib_dir = join(prefix, 'lib', py_version)
     if os.path.exists(stdlib_dir):
         for fn in os.listdir(stdlib_dir):
@@ -98,6 +102,7 @@ def main():
                             join(lib_dir, pkg_dir, fn))
 
     mkdir(inc_dir)
+    symlink('../include', join(local_dir, 'include'))
     stdinc_dir = join(prefix, 'include', py_version)
     if os.path.exists(stdinc_dir):
         for fn in os.listdir(stdinc_dir):
@@ -110,6 +115,7 @@ def main():
                 symlink(join(exec_dir, fn), join(lib_dir, fn))
 
     mkdir(bin_dir)
+    symlink('../bin', join(local_dir, 'bin'))
     print 'Copying %s to %s' % (sys.executable, bin_dir)
     py_executable = join(bin_dir, 'python')
     if sys.executable != py_executable:
