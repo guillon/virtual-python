@@ -83,25 +83,30 @@ def main():
     prefix = sys.prefix
     mkdir(lib_dir)
     stdlib_dir = join(prefix, 'lib', py_version)
-    for fn in os.listdir(stdlib_dir):
-        if fn != 'site-packages':
-            symlink(join(stdlib_dir, fn), join(lib_dir, fn))
+    if os.path.exists(stdlib_dir):
+        for fn in os.listdir(stdlib_dir):
+            if fn != 'site-packages':
+                symlink(join(stdlib_dir, fn), join(lib_dir, fn))
 
     mkdir(join(lib_dir, 'site-packages'))
     if not options.no_site_packages:
-        for fn in os.listdir(join(stdlib_dir, 'site-packages')):
-            symlink(join(stdlib_dir, 'site-packages', fn),
-                    join(lib_dir, 'site-packages', fn))
+        sites_dir = join(stdlib_dir, 'site-packages')
+        if os.path.exists(sites_dir):
+            for fn in os.listdir(sites_dir):
+                symlink(join(sites_dir, fn),
+                        join(lib_dir, 'site-packages', fn))
 
     mkdir(inc_dir)
     stdinc_dir = join(prefix, 'include', py_version)
-    for fn in os.listdir(stdinc_dir):
-        symlink(join(stdinc_dir, fn), join(inc_dir, fn))
+    if os.path.exists(stdinc_dir):
+        for fn in os.listdir(stdinc_dir):
+            symlink(join(stdinc_dir, fn), join(inc_dir, fn))
 
     if sys.exec_prefix != sys.prefix:
         exec_dir = join(sys.exec_prefix, 'lib', py_version)
-        for fn in os.listdir(exec_dir):
-            symlink(join(exec_dir, fn), join(lib_dir, fn))
+        if os.path.exists(exec_dir):
+            for fn in os.listdir(exec_dir):
+                symlink(join(exec_dir, fn), join(lib_dir, fn))
 
     mkdir(bin_dir)
     print 'Copying %s to %s' % (sys.executable, bin_dir)
