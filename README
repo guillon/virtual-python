@@ -1,0 +1,67 @@
+virtual-python script
+=====================
+
+Synopsys
+--------
+
+This repository contains the virtual-python.py script originally authored by
+Ian Bicking to simplify local pyton packages install.
+
+It is useful for installing without specific privilege a local python
+environmant based on the python system wide install. On top of this
+environment new packages may be installed by standard python install tools
+such as setuptools and distribute, without side effect on the system wide
+install.
+
+The script will install a new python executable that should be used in place
+of the system python.
+
+Install
+-------
+
+Simply execute with the preferred prefix::
+
+    PREFIX=$HOME/virtual-python
+    python virtual-python.py --prefix=$PREFIX
+
+This will install in `$PREFIX/bin/python` a new python binary that will point
+to the local python packages installed in the `$PREFIX/lib/python...`
+directory.
+
+Then simply use this python executable in place of the system installed
+python, for instance by putting it first in `PATH`::
+
+    PATH=$PREFIX/bin:$PATH
+    python myscript.py
+
+Refer to the scripts for other available options.
+
+Download
+--------
+
+Download the latest stable version directly from GitHub with::
+
+    wget https://raw.githubusercontent.com/guillon/virtual-python/master/virtual-python.py
+
+Or clone this repository with::
+
+    git clone https://github.com/guillon/virtual-python
+
+
+License and Copyright
+---------------------
+
+The original script used had no license information and was downloaded from
+http://peak.telecommunity.com/dist/virtual-python.py referenced from the
+easyinstall site
+http://peak.telecommunity.com/DevCenter/EasyInstall#custom-installation-locations.
+
+The original author is apparently Ian Bicking as referenced in the script source.
+
+It is assumed thus that the script can be redistributed, modified and
+relicensed in full freedom and without any guarantee of any sort.
+
+No specific license or copyright as been added on top of the original version.
+
+Note though that the script was modified to fix encountered issues, refer to the git
+history for contributors.
