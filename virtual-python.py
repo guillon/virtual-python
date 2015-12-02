@@ -85,16 +85,17 @@ def main():
     stdlib_dir = join(prefix, 'lib', py_version)
     if os.path.exists(stdlib_dir):
         for fn in os.listdir(stdlib_dir):
-            if fn != 'site-packages':
+            if fn not in ['site-packages', 'dist-packages']:
                 symlink(join(stdlib_dir, fn), join(lib_dir, fn))
 
-    mkdir(join(lib_dir, 'site-packages'))
-    if not options.no_site_packages:
-        sites_dir = join(stdlib_dir, 'site-packages')
-        if os.path.exists(sites_dir):
-            for fn in os.listdir(sites_dir):
-                symlink(join(sites_dir, fn),
-                        join(lib_dir, 'site-packages', fn))
+    for pkg_dir in ['site-packages', 'dist-packages']:
+        mkdir(join(lib_dir, pkg_dir))
+        if not options.no_site_packages:
+            sites_dir = join(stdlib_dir, pkg_dir)
+            if os.path.exists(sites_dir):
+                for fn in os.listdir(sites_dir):
+                    symlink(join(sites_dir, fn),
+                            join(lib_dir, pkg_dir, fn))
 
     mkdir(inc_dir)
     stdinc_dir = join(prefix, 'include', py_version)
